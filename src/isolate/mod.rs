@@ -128,7 +128,7 @@ impl Isolate {
     ///
     /// # Errors
     /// Will return an error if starting the Command fails.
-    pub async fn run_async(
+    pub fn run_async(
         isolate_name: &'static str,
         envs: &HashMap<String, String>,
     ) -> Result<tokio::process::Child, IsolateError> {
