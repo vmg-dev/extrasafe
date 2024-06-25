@@ -21,6 +21,7 @@ seccompiler = { version = "^0.4", default-features = false }
 libc = "^0.2"
 syscalls = { version = "^0.6", default-features = false }
 landlock = { version ="^0.3", optional = true }
+tokio = { version = "^1.15", features = ["process"] }
 
 [dev-dependencies]
 bytes = "^1"

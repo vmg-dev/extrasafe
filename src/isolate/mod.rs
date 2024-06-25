@@ -117,9 +117,29 @@ impl Isolate {
             .arg0(isolate_name)
             .env_clear()
             .envs(envs)
+            .output()
+            .map_err(IsolateError::Command)
+    }
+
+    /// Start a subprocess that will activate an Isolate with the given `isolate_name` and
+    /// environment variables. Only the provided environment variables will be present in the
+    /// subprocess and nothing else from the current process. The subprocess's `argv` will only
+    /// contain `isolate_name`.
+    ///
+    /// # Errors
+    /// Will return an error if starting the Command fails.
+    pub async fn run_async(
+        isolate_name: &'static str,
+        envs: &HashMap<String, String>,
+    ) -> Result<tokio::process::Child, IsolateError> {
+        let memfd = system::create_memfd_from_self_exe()?;
+        tokio::process::Command::new(format!("/proc/self/fd/{}", memfd.as_raw_fd()))
+            .arg0(isolate_name)
+            .env_clear()
+            .envs(envs)
             .stdout(Stdio::piped())
             .stderr(Stdio::piped())
-            .output()
+            .spawn()
             .map_err(IsolateError::Command)
     }
 
