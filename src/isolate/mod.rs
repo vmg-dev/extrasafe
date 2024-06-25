@@ -137,8 +137,8 @@ impl Isolate {
             .arg0(isolate_name)
             .env_clear()
             .envs(envs)
-            // .stdout(Stdio::piped())
-            // .stderr(Stdio::piped())
+            .stdout(Stdio::piped())
+            .stderr(Stdio::piped())
             .spawn()
             .map_err(IsolateError::Command)
     }
